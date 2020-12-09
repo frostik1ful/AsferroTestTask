@@ -1,0 +1,5 @@
+1. To retreave info about number, send get request with param "number" to http://localhost:8080/task/textAboutNumber
+example - http://localhost:8080/task/textAboutNumber?number=44
+2. To retreave ten most popular numbers, send get request to http://localhost:8080/task/tenMostPopularNumbers
+3. To retreave average latency, send get request to http://localhost:8080/task/averageLatency
+4. To retreave average success rate, send get request to http://localhost:8080/task/averageSuccessRate
