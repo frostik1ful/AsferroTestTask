@@ -1,13 +1,13 @@
 package com.example.demo.entity;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-@Entity
-@Table(name = "requested_number", schema = "public")
+
+@Document(indexName = "number")
 public class RequestedNumber {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private String id;
     private Integer number;
     private Long latency;
     private boolean isRequestSuccess;
@@ -21,11 +21,12 @@ public class RequestedNumber {
         this.isRequestSuccess = isRequestSuccess;
     }
 
-    public long getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

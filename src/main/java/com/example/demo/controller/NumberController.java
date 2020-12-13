@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.respond.*;
 import com.example.demo.service.interfaces.NumbersApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,22 +16,30 @@ public class NumberController {
     }
 
     @GetMapping("/textAboutNumber")
-    public String textAboutNumber(@RequestParam int number) {
-        return numbersApiService.retrieveTextByNumber(number);
+    public Respond textAboutNumber(@RequestParam String number) {
+        System.out.println(number);
+        try {
+            int value = Integer.parseInt(number);
+            return numbersApiService.retrieveTextByNumber(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return new WrongInputRespond();
+        }
     }
 
+
     @GetMapping("/tenMostPopularNumbers")
-    public String tenMostPopularNumbers() {
+    public Respond tenMostPopularNumbers() {
         return numbersApiService.retrieveTenMostPopularNumbers();
     }
 
     @GetMapping("/averageLatency")
-    public String averageLatency() {
+    public Respond averageLatency() {
         return numbersApiService.retrieveAverageLatency();
     }
 
     @GetMapping("/averageSuccessRate")
-    public String averageSuccessRate() {
+    public Respond averageSuccessRate() {
         return numbersApiService.retrieveAverageSuccessRate();
     }
 }

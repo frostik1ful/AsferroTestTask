@@ -1,19 +1,19 @@
 package com.example.demo.service.classes;
 
 import com.example.demo.factory.NumberFactory;
+import com.example.demo.respond.AverageLatencyRespond;
+import com.example.demo.respond.AverageSuccessRateRespond;
+import com.example.demo.respond.MostPopularNumbersRespond;
+import com.example.demo.respond.TextByNumberRespond;
 import com.example.demo.service.interfaces.NumbersApiService;
 import com.example.demo.service.interfaces.RequestedNumberDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
 @Service
 public class NumbersApiImplService implements NumbersApiService {
-    private StringBuilder builder;
-
     private final RestTemplate restTemplate = new RestTemplate();
-
     private final RequestedNumberDAO requestedNumberDAO;
 
     @Autowired
@@ -22,7 +22,7 @@ public class NumbersApiImplService implements NumbersApiService {
     }
 
     @Override
-    public String retrieveTextByNumber(int number) {
+    public TextByNumberRespond retrieveTextByNumber(int number) {
         String answer = "";
         String apiUrl = "http://numbersapi.com/";
         try {
@@ -34,24 +34,24 @@ public class NumbersApiImplService implements NumbersApiService {
             requestedNumberDAO.save(NumberFactory.createEmptyNumber());
             e.printStackTrace();
         }
-        return answer;
+        return new TextByNumberRespond(answer);
     }
 
     @Override
-    public String retrieveTenMostPopularNumbers() {
-        builder = new StringBuilder();
-        requestedNumberDAO.findTenMostPopular().forEach(s -> s.ifPresent(value -> builder.append(value).append(", ")));
-        return "10 most popular numbers - " + builder.toString();
+    public MostPopularNumbersRespond retrieveTenMostPopularNumbers() {
+        return requestedNumberDAO.findTenMostPopular();
     }
 
     @Override
-    public String retrieveAverageLatency() {
-        return requestedNumberDAO.findAverageLatency().map(aLong -> "AverageLatency is " + aLong + "ms").orElse("AverageLatency is " + 0L + "ms");
+    public AverageLatencyRespond retrieveAverageLatency() {
+        Double latency = requestedNumberDAO.findAverageLatency();
+        return new AverageLatencyRespond(latency);
     }
 
     @Override
-    public String retrieveAverageSuccessRate() {
-        return "Average success rate " + requestedNumberDAO.findAverageSuccessRate() + "%";
+    public AverageSuccessRateRespond retrieveAverageSuccessRate() {
+        return requestedNumberDAO.findAverageSuccessRate();
+
     }
 
 }

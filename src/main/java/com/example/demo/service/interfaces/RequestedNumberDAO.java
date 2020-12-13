@@ -1,16 +1,16 @@
 package com.example.demo.service.interfaces;
 
 import com.example.demo.entity.RequestedNumber;
+import com.example.demo.respond.AverageSuccessRateRespond;
+import com.example.demo.respond.MostPopularNumbersRespond;
 
-import java.util.List;
-import java.util.Optional;
 
 public interface RequestedNumberDAO {
     void save(RequestedNumber number);
 
-    List<Optional<String>> findTenMostPopular();
+    MostPopularNumbersRespond findTenMostPopular();
 
-    Optional<Long> findAverageLatency();
+    Double findAverageLatency();
 
-    Double findAverageSuccessRate();
+    AverageSuccessRateRespond findAverageSuccessRate();
 }
